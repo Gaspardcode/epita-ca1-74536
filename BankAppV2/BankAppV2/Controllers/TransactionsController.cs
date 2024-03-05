@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ * Gaspard TORTERAT stu-74536
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +19,8 @@ namespace BankAppV2.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+        private int startup = 0;
+
         public TransactionsController(ApplicationDbContext context)
         {
             _context = context;
@@ -24,6 +29,53 @@ namespace BankAppV2.Controllers
         // GET: Transactions
         public async Task<IActionResult> Index()
         {
+            if(startup == 0)
+            {
+                startup = 1;
+                List<Transaction> transas = new List<Transaction>
+                {
+                    new Transaction
+                    {
+                        // Id = 1,
+                        ACCreceiver = "js-7-90-78",
+                        Amount = 90,
+                        Date = DateTime.Now,
+                        Action = "Deposit"
+                    },
+                    new Transaction
+                    {
+                        //Id = 2,
+                        ACCsender = "me-9-67-09",
+                        ACCreceiver = "js-7-90-78",
+                        Amount = 70,
+                        Date = DateTime.Now,
+                        Action = "Transfer"
+                    },
+                    new Transaction
+                    {
+                        //Id = 35,
+                        ACCsender = "lu-4-34-89",
+                        ACCreceiver = "js-7-90-78",
+                        Amount = 40,
+                        Date = DateTime.Now,
+                        Action = "Transfer"
+                    },
+                    new Transaction
+                    {
+                        //Id = 24,
+                        ACCreceiver = "js-7-90-78",
+                        Amount = -40,
+                        Date = DateTime.Now,
+                        Action = "Withdraw"
+                    }
+                };
+                foreach (var item in transas)
+                {
+                    if (_context.Transaction.Any(m => m.Id == item.Id) == false)
+                    { await Create(item); }
+                }
+            }
+            //ViewData["TransactionData"] = transas;
             return View(await _context.Transaction.ToListAsync());
         }
 
@@ -61,6 +113,16 @@ namespace BankAppV2.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(transaction);
+                //var am = transaction.Amount;
+                //var accR = transaction.ACCreceiver;
+                //var customer = await _context.Account
+                //.FirstOrDefaultAsync(m => m.AccountName == accR);
+                //Account.Balance += am;
+                _context.Account.Single(m => m.AccountName == transaction.ACCreceiver).Balance += transaction.Amount;
+                if(transaction.ACCsender != null)
+                { 
+                    _context.Account.Single(m => m.AccountName == transaction.ACCreceiver).Balance -= transaction.Amount;
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -82,7 +144,7 @@ namespace BankAppV2.Controllers
             }
             return View(transaction);
         }
-
+//=====================================
         // POST: Transactions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

@@ -1,3 +1,6 @@
+/*
+ * Gaspard TORTERAT stu-74536
+ */
 using BankAppV2.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

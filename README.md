@@ -1,3 +1,1 @@
 # BankApp
-Gaspard TORTERAT SLANDA
-STU 74536

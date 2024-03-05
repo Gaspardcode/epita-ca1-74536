@@ -10,5 +10,6 @@ namespace BankAppV2.Data
         { }
         public DbSet<Customer> customers { get; set; }
         public DbSet<Transaction> Transaction { get; set; } = default!;
+        public DbSet<BankAppV2.Models.Account> Account { get; set; } = default!;
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/*
+ * Gaspard TORTERAT stu-74536
+ */
+using System.ComponentModel.DataAnnotations;
 
 namespace BankAppV2.Models
 {

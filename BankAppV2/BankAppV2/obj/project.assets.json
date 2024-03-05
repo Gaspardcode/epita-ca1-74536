@@ -8908,11 +8908,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Alpha\\source\\repos\\BankAppV2\\BankAppV2\\BankAppV2.csproj",
+      "projectUniqueName": "C:\\Users\\Alpha\\save\\docs\\epitacp\\dorset\\OOP\\BankApp\\BankAppV2\\BankAppV2\\BankAppV2.csproj",
       "projectName": "BankAppV2",
-      "projectPath": "C:\\Users\\Alpha\\source\\repos\\BankAppV2\\BankAppV2\\BankAppV2.csproj",
+      "projectPath": "C:\\Users\\Alpha\\save\\docs\\epitacp\\dorset\\OOP\\BankApp\\BankAppV2\\BankAppV2\\BankAppV2.csproj",
       "packagesPath": "C:\\Users\\Alpha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Alpha\\source\\repos\\BankAppV2\\BankAppV2\\obj\\",
+      "outputPath": "C:\\Users\\Alpha\\save\\docs\\epitacp\\dorset\\OOP\\BankApp\\BankAppV2\\BankAppV2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Alpha\\AppData\\Roaming\\NuGet\\NuGet.Config",
