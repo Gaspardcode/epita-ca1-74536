@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BankAppV2.Data;
 using BankAppV2.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
 
 namespace BankAppV2.Controllers
 {
@@ -60,6 +61,8 @@ namespace BankAppV2.Controllers
         {
             if (ModelState.IsValid)
             {
+                //var hold = account.Holder;
+                //account.AccountName = hold;
                 _context.Add(account);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

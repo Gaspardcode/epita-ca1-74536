@@ -69,11 +69,13 @@ namespace BankAppV2.Controllers
                         Action = "Withdraw"
                     }
                 };
+                /*
                 foreach (var item in transas)
                 {
-                    if (_context.Transaction.Any(m => m.Id == item.Id) == false)
+                    if (_context.Transaction.Any(m => m.Id == item.Id) == false
                     { await Create(item); }
                 }
+                */
             }
             //ViewData["TransactionData"] = transas;
             return View(await _context.Transaction.ToListAsync());
@@ -102,6 +104,10 @@ namespace BankAppV2.Controllers
         {
             return View();
         }
+        public IActionResult Error_balance()
+        {
+            return View("Error_balance");
+        }
 
         // POST: Transactions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -121,7 +127,15 @@ namespace BankAppV2.Controllers
                 _context.Account.Single(m => m.AccountName == transaction.ACCreceiver).Balance += transaction.Amount;
                 if(transaction.ACCsender != null)
                 { 
-                    _context.Account.Single(m => m.AccountName == transaction.ACCreceiver).Balance -= transaction.Amount;
+                    var dif = _context.Account.Single(m => m.AccountName == transaction.ACCsender).Balance - transaction.Amount;
+                    if (dif >= 0)
+                    {
+                        _context.Account.Single(m => m.AccountName == transaction.ACCsender).Balance -= transaction.Amount;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error_balance");
+                    }
                 }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -217,5 +231,6 @@ namespace BankAppV2.Controllers
         {
             return _context.Transaction.Any(e => e.Id == id);
         }
+
     }
 }
