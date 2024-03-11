@@ -28,7 +28,7 @@ namespace BankAppV2.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.customers.ToListAsync());
-        }
+        }   
 
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)

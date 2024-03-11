@@ -18,8 +18,7 @@ namespace BankAppV2.Controllers
     public class TransactionsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        private int startup = 0;
+        private static int startup = 1;
 
         public TransactionsController(ApplicationDbContext context)
         {
@@ -69,15 +68,21 @@ namespace BankAppV2.Controllers
                         Action = "Withdraw"
                     }
                 };
-                /*
+                
                 foreach (var item in transas)
                 {
-                    if (_context.Transaction.Any(m => m.Id == item.Id) == false
+                    if (!_context.Transaction.Any(m => m.Id == item.Id))
                     { await Create(item); }
                 }
-                */
+
             }
             //ViewData["TransactionData"] = transas;
+            var names = new List<String>();
+            foreach (var acc_name in _context.Account.Where(x => x.Holder == User.Identity.Name))
+            {
+                names.Add(acc_name.AccountName);
+            }
+            ViewData["Acc"] = names;
             return View(await _context.Transaction.ToListAsync());
         }
 

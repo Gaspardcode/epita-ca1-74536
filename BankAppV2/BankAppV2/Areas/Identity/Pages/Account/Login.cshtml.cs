@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BankAppV2.Areas.Identity.Pages.Account
 {
@@ -68,6 +72,8 @@ namespace BankAppV2.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
 
+            //public string Name { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -111,9 +117,32 @@ namespace BankAppV2.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                //==================================================================
+                var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt");
+                    return Page();
+                }
+
+                var result = await _signInManager.CheckPasswordSignInAsync(user,Input.Password, false);
+                //=======================================================================
                 if (result.Succeeded)
                 {
+                    var claims = new Claim[]
+                    {
+                        new Claim("Bank","1")
+                    };
+                    /*
+                    if(user.Email.Contains("@bank.com"))
+                    {
+                        await _signInManager.UserManager.CreateAsync(user, "Employee");
+                        await _signInManager.UserManager.AddToRoleAsync(user,"Employee");
+                    }
+                    */
+                    await _signInManager.SignInWithClaimsAsync(user, Input.RememberMe, claims);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

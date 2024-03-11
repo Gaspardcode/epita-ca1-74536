@@ -9,13 +9,16 @@ using BankAppV2.Data;
 using BankAppV2.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
+using BankAppV2.Migrations;
 
 namespace BankAppV2.Controllers
 {
-    [Authorize]
+    
+   [Authorize]
     public class AccountsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private static int startup = 1;
 
         public AccountsController(ApplicationDbContext context)
         {
@@ -24,7 +27,47 @@ namespace BankAppV2.Controllers
 
         // GET: Accounts
         public async Task<IActionResult> Index()
-        { 
+        {
+            if(startup == 0)
+            {
+                startup = 1;
+                List<Account> account = new List<Account>
+                {
+                    new Account
+                    {
+                        AccountName = "js-7-90-78",
+                        Balance = 765,
+                        AccType = account_type.Current,
+                        Holder = "bla@gmail.com",
+                    },
+                    new Account
+                    {
+                        AccountName = "lu-4-34-89",
+                        Balance = 1780,
+                        AccType = account_type.Current,
+                        Holder = "huhu@gmail.com",
+                    },
+                    new Account
+                    {
+                        AccountName = "me-9-67-09",
+                        Balance = 0,
+                        AccType = account_type.Current,
+                        Holder = "lala@gmail.com",
+                    },
+                    new Account
+                    {
+                        AccountName = "me-9-67-09",
+                        Balance = 10500,
+                        AccType = account_type.Savings,
+                        Holder = "lala@gmail.com",
+                    }
+                };
+                foreach (var item in account)
+                {
+                    if (!_context.Transaction.Any(m => m.Id == item.Id))
+                    { await Create(item); }
+                }
+            }
             return View(await _context.Account.ToListAsync());
         }
 

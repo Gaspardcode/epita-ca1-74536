@@ -6,61 +6,125 @@
 @{
     ViewData["Title"] = "Index";
     //var transas = (IEnumerable<Transaction>)ViewData["TransactionData"]; 
+    var accs = (List<String>)ViewData["Acc"];
 }
 
-<h1>Index</h1>
+@if (User.Identity.IsAuthenticated && User.Identity.Name.Contains("@bank.com"))
+{
+    <h1>Transactions</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ACCsender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ACCreceiver)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Action)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ACCsender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ACCreceiver)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Action)
-            </td>
-            <td>
-               
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-<!--    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | -->
-                <!-- |    
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> -->  
-            </td>
-        </tr>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ACCsender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ACCreceiver)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Action)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ACCsender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ACCreceiver)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Action)
+                    </td>
+                    <td>
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                        <!--    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | -->
+                        <!-- |    
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> -->  
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
 }
+else
+{
+        <h1>Transactions</h1>
 
-    </tbody>
-</table>
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Account Sender
+                    </th>
+                    <th>
+                        Account Receiver
+                            </th>
+                    <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th>
+                    @Html.DisplayNameFor(model => model.Action)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Where(x => accs.Any(y => y == x.ACCsender) || accs.Any(y => y == x.ACCreceiver)))
+            {
+                        <tr>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.ACCsender)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.ACCreceiver)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Action)
+                            </td>
+                            <td>
+
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                                <!--    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | -->
+                                <!-- |    
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> -->  
+                            </td>
+                        </tr>
+            }
+            </tbody>
+        </table>
+}

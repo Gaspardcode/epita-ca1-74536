@@ -15,7 +15,7 @@ namespace BankAppV2.Models
     {
         public int Id { get; set; }
 
-        public int Holder { get; set; }
+        public string Holder { get; set; }
 
         [DataType(DataType.Currency)]
         public int Balance { get; set; }

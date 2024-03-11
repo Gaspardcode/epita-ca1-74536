@@ -1,4 +1,5 @@
-﻿<!--
+﻿@using Microsoft.AspNetCore.Identity
+<!--
    Gaspard TORTERAT stu-74536
  -->
 @model IEnumerable<BankAppV2.Models.Customer>
@@ -6,9 +7,9 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-
-<h1>Index</h1>
+@if (User.Identity.IsAuthenticated && User.Identity.Name.Contains("@bank.com"))
+{
+<h1>Customers</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -67,3 +68,7 @@
 }
     </tbody>
 </table>
+}
+else{
+    <span>You are not authorized to access the customers Data.</span>
+}
