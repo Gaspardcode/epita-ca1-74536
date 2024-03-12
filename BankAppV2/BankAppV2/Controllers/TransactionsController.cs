@@ -107,6 +107,19 @@ namespace BankAppV2.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
+            var names = new List<String>();
+            foreach (var acc_name in _context.Account.Where(x => x.Holder == User.Identity.Name))
+            {
+                names.Add(acc_name.AccountName);
+            }
+            ViewData["Acc"] = names;
+            var accs = new List<(String,String)>();
+            foreach (var acc_name in _context.Account)
+            {
+                var d = (acc_name.AccountName, acc_name.AccType.ToString());
+                accs.Add(d);
+            }
+            ViewData["All"] = accs;
             return View();
         }
         public IActionResult Error_balance()
@@ -129,12 +142,12 @@ namespace BankAppV2.Controllers
                 //var customer = await _context.Account
                 //.FirstOrDefaultAsync(m => m.AccountName == accR);
                 //Account.Balance += am;
-                _context.Account.Single(m => m.AccountName == transaction.ACCreceiver).Balance += transaction.Amount;
                 if(transaction.ACCsender != null)
                 { 
                     var dif = _context.Account.Single(m => m.AccountName == transaction.ACCsender).Balance - transaction.Amount;
                     if (dif >= 0)
-                    {
+                    { 
+                        _context.Account.Single(m => m.AccountName == transaction.ACCreceiver).Balance += transaction.Amount;
                         _context.Account.Single(m => m.AccountName == transaction.ACCsender).Balance -= transaction.Amount;
                     }
                     else

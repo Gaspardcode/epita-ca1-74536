@@ -97,7 +97,10 @@ namespace BankAppV2.Controllers
             {
                 return NotFound();
             }
-
+            /*
+            var cus = _context.customers.ToList().Find(x => x.Id == customer.Id);
+            cus.Email = "blabla@gmail.com";
+            */
             if (ModelState.IsValid)
             {
                 try

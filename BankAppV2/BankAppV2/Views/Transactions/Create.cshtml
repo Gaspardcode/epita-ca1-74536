@@ -5,19 +5,28 @@
 
 @{
     ViewData["Title"] = "Create";
+    var accs = (List<String>)ViewData["Acc"];
+    var All = (List<(String,String)>)ViewData["All"];
 }
 
+@if (User.Identity.IsAuthenticated && User.Identity.Name.Contains("@bank.com"))
+{ 
 <h1>Create</h1>
 
 <h4>Transaction</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create">  
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ACCsender" class="control-label"></label>
-                <input asp-for="ACCsender" class="form-control" />
+                    <select asp-for="ACCsender" class="form-control" name="Account Sender">
+                        @foreach (var acc in All)
+                        {
+                                           <option value=@acc.Item1 >@acc.Item1 || Type: @acc.Item2 Account</option>
+                        }
+                        </select>
                 <span asp-validation-for="ACCsender" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -54,8 +63,65 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
+    </div>
+}
+else
+{
+<h1>Create</h1>
+
+<h4>Transaction</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">  
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ACCsender" class="control-label"></label>
+                <select asp-for="ACCsender" class="form-control" name="Account Sender">
+                    @foreach(var acc in accs)
+                        {
+                                    <option value=@acc>@acc</option>
+                        }
+                    </select>
+                <span asp-validation-for="ACCsender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ACCreceiver" class="control-label"></label>
+                <input asp-for="ACCreceiver" class="form-control" />
+                <span asp-validation-for="ACCreceiver" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Action" class="control-label"></label>
+                <select asp-for="Action" class="form-control" name="Action">
+                   <!--<option type="hidden" value="Withdraw">Select Action</option>--> 
+                    <option value="Withdraw">Withdraw</option>
+                    <option value="Transfer">Transfer</option>
+                    <option value="Deposit">Deposit</option>
+                </select>
+                <span asp-validation-for="Action" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+    </div> 
+
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

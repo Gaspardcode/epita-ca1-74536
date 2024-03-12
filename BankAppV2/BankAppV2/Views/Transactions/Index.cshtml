@@ -11,12 +11,12 @@
 
 @if (User.Identity.IsAuthenticated && User.Identity.Name.Contains("@bank.com"))
 {
-    <h1>Transactions</h1>
+    <h1>Transactions</h1>   
 
     <p>
         <a asp-action="Create">Create New</a>
     </p>
-    <table class="table">
+    <table class="table" style="background-color:#FFFF5b">
         <thead>
             <tr>
                 <th>
@@ -71,60 +71,60 @@
 }
 else
 {
-        <h1>Transactions</h1>
+    <h1>Transactions</h1>
 
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Account Sender
-                    </th>
-                    <th>
-                        Account Receiver
-                            </th>
-                    <th>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table" style="background-color:#33475b">
+        <thead>
+            <tr>
+                <th>
+                    Account Sender
+                </th>
+                <th>
+                    Account Receiver
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Amount)
-                    </th>
-                    <th>
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Date)
-                    </th>
-                    <th>
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Action)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var item in Model.Where(x => accs.Any(y => y == x.ACCsender) || accs.Any(y => y == x.ACCreceiver)))
             {
-                        <tr>
-                            <td>
+                <tr>
+                    <td>
                         @Html.DisplayFor(modelItem => item.ACCsender)
-                            </td>
-                            <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.ACCreceiver)
-                            </td>
-                            <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Amount)
-                            </td>
-                            <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Date)
-                            </td>
-                            <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Action)
-                            </td>
-                            <td>
+                    </td>
+                    <td>
 
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                                <!--    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | -->
-                                <!-- |    
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> -->  
-                            </td>
-                        </tr>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                        <!--    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | -->
+                        <!-- |    
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> -->  
+                    </td>
+                </tr>
             }
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 }

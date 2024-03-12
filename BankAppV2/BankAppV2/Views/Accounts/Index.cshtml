@@ -46,11 +46,11 @@
                         @Html.DisplayFor(modelItem => item.AccType)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                               <!--<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | --> 
                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                         @if (item.Balance == 0)
                         {
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                             <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         }
                     </td>
                 </tr>
@@ -61,46 +61,48 @@
 else
 {
     <h1>Your Accounts</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                    Email
-                    </th>
-                    <th>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
                     @Html.DisplayNameFor(model => model.Balance)
-                    </th>
-                    <th>
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.AccountName)
-                    </th>
-                    <th>
+                </th>
+                <th>
                     Account Type
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var item in Model.Where(x => x.Holder == User.Identity.Name))
             {
-                        <tr>
-                            <td>
-                        @Html.DisplayFor(modelItem => item.Holder)
-                            </td>
-                            <td>
+                <tr>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Balance)
-                            </td>
-                            <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.AccountName)
-                            </td>
-                            <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.AccType)
-                            </td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                            </td>
-                        </tr>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
             }
-            </tbody>
-        </table>
-
+        </tbody>
+    </table>
+    int res = 0;
+    foreach(var item in Model.Where(x => x.Holder == User.Identity.Name))
+    {
+        res += item.Balance;
+    }
+    Account a = new Account();
+    a.Balance = res;
+    <h2>Your Total Balance</h2>
+            <p>@Html.DisplayFor(modelItem => a.Balance)</p>
 }
