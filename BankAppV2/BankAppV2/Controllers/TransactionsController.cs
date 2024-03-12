@@ -107,10 +107,11 @@ namespace BankAppV2.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            var names = new List<String>();
+            var names = new List<(String,String)>();
             foreach (var acc_name in _context.Account.Where(x => x.Holder == User.Identity.Name))
             {
-                names.Add(acc_name.AccountName);
+                var d = (acc_name.AccountName,acc_name.AccType.ToString());
+                names.Add(d);
             }
             ViewData["Acc"] = names;
             var accs = new List<(String,String)>();

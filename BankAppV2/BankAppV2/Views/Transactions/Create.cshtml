@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    var accs = (List<String>)ViewData["Acc"];
+    var accs = (List<(String,String)>)ViewData["Acc"];
     var All = (List<(String,String)>)ViewData["All"];
 }
 
@@ -80,14 +80,19 @@ else
                 <select asp-for="ACCsender" class="form-control" name="Account Sender">
                     @foreach(var acc in accs)
                         {
-                                    <option value=@acc>@acc</option>
+                                    <option value=@acc.Item1>@acc.Item1 -- @acc.Item2 </option>
                         }
                     </select>
                 <span asp-validation-for="ACCsender" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ACCreceiver" class="control-label"></label>
-                <input asp-for="ACCreceiver" class="form-control" />
+                    <select asp-for="ACCsender" class="form-control" name="Account Sender">
+                        @foreach (var acc in All.Where(x => accs.All(y => x != y)))
+                        {
+                            <option value=@acc.Item1 >@acc.Item1 -- @acc.Item2 Account</option>
+                        }
+                            </select>
                 <span asp-validation-for="ACCreceiver" class="text-danger"></span>
             </div>
             <div class="form-group">
